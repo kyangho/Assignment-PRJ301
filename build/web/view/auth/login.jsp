@@ -13,19 +13,23 @@
         <title>Login</title>
     </head>
     <body>
-        <form action="login" method="POST">
-            Username: <input type="text" name="username"/><br/>
-            Password: <input type="password" name="password"/><br/>
-            <c:if test="${requestScope.isFailed != null}">
-                <c:if test="${requestScope.isFailed}">
-                    Login successful!
-                </c:if><br/>
-                <c:if test="${!requestScope.isFailed}">
-                    Login failed!
-                </c:if><br/>   
-            </c:if>
-            
-            <input type="submit" value="Login"/>
-        </form>
+        <c:if test="${requestScope.isFailed != null}">
+            <a href="/Assignment-PRJ301/home" onclick="LogoutController">Log out</a>
+        </c:if>
+        <c:if test="${requestScope.isFailed == null}">
+            <form action="login" method="POST">
+                Username: <input type="text" name="username"/><br/>
+                Password: <input type="password" name="password"/><br/>
+                <c:if test="${requestScope.isFailed != null}">
+                    <c:if test="${requestScope.isFailed}">
+                        Login successful!
+                    </c:if><br/>
+                    <c:if test="${!requestScope.isFailed}">
+                        Login failed!
+                    </c:if><br/>   
+                </c:if>
+                <input type="submit" value="Login"/>
+            </form>    
+        </c:if>
     </body>
 </html>

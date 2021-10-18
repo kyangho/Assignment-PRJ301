@@ -38,7 +38,7 @@ public class AccountDBContext extends DBContext{
     }
     
     public Account getAccount(String username, String password){
-        String sql = "SELECT a.[username], a.[password], a.[displayname], f.[url], g.[gname]\n" +
+        String sql = "SELECT a.[username], a.[password], a.[displayname],a.[email], a.[phone], f.[url], g.[gname]\n" +
                     " FROM [Account] as a\n" +
                     " LEFT JOIN [GroupAccount] as gc ON a.[username] = gc.[username]\n" +
                     " LEFT JOIN [Group] as g ON g.[gid] = gc.[gid]\n" +
@@ -51,8 +51,10 @@ public class AccountDBContext extends DBContext{
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             if(rs.next()){
-                Account account = new Account(rs.getString(1), rs.getString(2), rs.getString(3));
-                String url = rs.getString(4);
+                Account account = new Account(rs.getString("username"), rs.getString("password"), rs.getString("displayname"));
+                account.setEmail(rs.getString("email"));
+                account.setPhone(rs.getString("phone"));
+                String url = rs.getString("url");
                 if (url != null){
                     Feature f = new Feature(url);
                     account.getFeatures().add(f);

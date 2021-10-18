@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.auth;
+package controller;
 
-import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,7 +17,22 @@ import model.account.Account;
  *
  * @author Ducky
  */
-public class LoginController extends HttpServlet {
+public class AccountDetails extends HomeController {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -29,18 +43,19 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Boolean isFailed = null;
-        
-        try{
-            isFailed = Boolean.parseBoolean(request.getParameter("isFailed"));
-        }catch(Exception e){
-            request.setAttribute("isFailed", null);
+        Account account = (Account)request.getSession().getAttribute("account");
+        if (account != null){
+            request.setAttribute("displayname", account.getDisplayName());
+            request.setAttribute("email", account.getEmail());
+            request.setAttribute("phone", account.getPhone());
+            request.setAttribute("pageInclude", "/view/account/detail.jsp");
+        }else{
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
         }
-        
-        request.getRequestDispatcher("../view/auth/login.jsp").forward(request, response);
+        super.doGet(request, response);
     }
 
     /**
@@ -54,20 +69,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        AccountDBContext adb = new AccountDBContext();
-        Account account = adb.getAccount(username, password);
-        if (account != null){
-            request.setAttribute("isFailed", true);
-            request.getSession().setAttribute("account", account);
-            response.sendRedirect(request.getContextPath() + "/home");
-        }else{
-            request.setAttribute("isFailed", false);
-            request.getSession().setAttribute("account", null);
-            response.sendRedirect(request.getContextPath() + "/account/login");
-        }
+        processRequest(request, response);
     }
 
     /**

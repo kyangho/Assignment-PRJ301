@@ -15,6 +15,8 @@ public class Account {
     private String username;
     private String password;
     private String displayName;
+    private String email;
+    private String phone;
     private ArrayList<Feature> features = new ArrayList<>();
     public Account() {
     }
@@ -25,6 +27,22 @@ public class Account {
         this.displayName = displayName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
     public ArrayList<Feature> getFeatures() {
         return features;
     }
