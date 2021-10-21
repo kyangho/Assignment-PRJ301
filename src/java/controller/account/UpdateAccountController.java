@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.account;
 
+import controller.HomeController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +18,7 @@ import model.account.Account;
  *
  * @author Ducky
  */
-
-public class HomeController extends HttpServlet {
+public class UpdateAccountController extends HomeController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");            
+            out.println("<title>Servlet UpdateAccountController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateAccountController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,42 +54,36 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    protected void loadHeaderFooter(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        String home_href = "/Assignment-PRJ301/home";
-        String login_href = "/Assignment-PRJ301/account/login";
-        String login_href_value = "Login";
-        String register_href = "/Assignment-PRJ301/account/register";
-        String register_href_value = "Register";
-        String logout_href = "/Assignment-PRJ301/account/logout";
-        String logout_href_value = "Log out";
-        if (request.getSession().getAttribute("account") == null){
-            logout_href = "";
-            logout_href_value = "";
-        }else{
-            login_href_value = "Hello, ";
-            Account account = (Account)request.getSession().getAttribute("account");
-            login_href_value += account.getDisplayName();
-            login_href = "/Assignment-PRJ301/account";
-        }
-        request.setAttribute("home_href", home_href);
-        request.setAttribute("login_href", login_href);
-        request.setAttribute("login_href_value", login_href_value);
-        request.setAttribute("register_href", register_href);
-        request.setAttribute("register_href_value", register_href_value);
-        request.setAttribute("logout_href", logout_href);
-        request.setAttribute("logout_href_value", logout_href_value);
-    }
-    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        loadHeaderFooter(request, response);
-        request.getRequestDispatcher("/view/home.jsp").forward(request, response);
+        Account account = (Account)request.getSession().getAttribute("account");
+        if (account != null){
+            request.setAttribute("account", account);
+            request.setAttribute("dob", account.getDob().toString());
+            request.setAttribute("pageInclude", "/view/account/update.jsp");
+            super.loadHeaderFooter(request, response);
+            request.getRequestDispatcher("../view/home.jsp").forward(request, response);
+        }else{
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
+        
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
     /**
      * Returns a short description of the servlet.

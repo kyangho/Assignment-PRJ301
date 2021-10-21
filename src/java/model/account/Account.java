@@ -5,6 +5,7 @@
  */
 package model.account;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,10 @@ public class Account {
     private String displayName;
     private String email;
     private String phone;
+    private Date dob;
+    private boolean gender;
     private ArrayList<Feature> features = new ArrayList<>();
+    private ArrayList<Transaction> transactions = new ArrayList<>();
     public Account() {
     }
 
@@ -27,6 +31,42 @@ public class Account {
         this.displayName = displayName;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+    
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+    
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+    
     public String getEmail() {
         return email;
     }

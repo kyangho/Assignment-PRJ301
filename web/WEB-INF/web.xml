@@ -10,7 +10,15 @@
     </servlet>
     <servlet>
         <servlet-name>AccountDetails</servlet-name>
-        <servlet-class>controller.AccountDetails</servlet-class>
+        <servlet-class>controller.account.AccountDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>controller.account.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAccountController</servlet-name>
+        <servlet-class>controller.account.UpdateAccountController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -32,4 +40,26 @@
         <servlet-name>AccountDetails</servlet-name>
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/account/register</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.HomeController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <location>/errorpage.jsp</location>
+    </error-page>
+    <servlet-mapping>
+        <servlet-name>UpdateAccountController</servlet-name>
+        <url-pattern>/account/update</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
 </web-app>

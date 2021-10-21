@@ -15,8 +15,9 @@
     <body>
         <div class="header-login-inventory">
             <a href="${requestScope.home_href}">Home</a>
-            <a href="${requestScope.login_href}">${requestScope.login_href_value}</a>
-            <a href="${requestScope.logout_href}"> ${requestScope.logout_href_value}</a>
+            <a href="${requestScope.login_href}">${requestScope.login_href_value}</a> /
+            <a href="${requestScope.register_href}">${requestScope.register_href_value}</a>
+            <a href="${requestScope.logout_href}">${requestScope.logout_href_value}</a>
         </div>
         <c:if test="${requestScope.pageInclude != null}">
             <jsp:include page="${requestScope.pageInclude}"></jsp:include>

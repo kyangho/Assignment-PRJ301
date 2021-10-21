@@ -5,6 +5,7 @@
  */
 package controller.auth;
 
+import controller.HomeController;
 import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,9 +19,8 @@ import model.account.Account;
  *
  * @author Ducky
  */
-public class LoginController extends HttpServlet {
+public class LoginController extends HomeController {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,8 +39,9 @@ public class LoginController extends HttpServlet {
         }catch(Exception e){
             request.setAttribute("isFailed", null);
         }
-        
-        request.getRequestDispatcher("../view/auth/login.jsp").forward(request, response);
+        request.setAttribute("pageInclude", "/view/auth/login.jsp");
+        super.doGet(request, response);
+//        request.getRequestDispatcher("../view/auth/login.jsp").forward(request, response);
     }
 
     /**
