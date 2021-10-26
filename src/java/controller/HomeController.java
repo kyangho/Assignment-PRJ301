@@ -5,14 +5,17 @@
  */
 package controller;
 
+import dal.MovieDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.account.Account;
+import model.movie.Movie;
 
 /**
  *
@@ -58,6 +61,9 @@ public class HomeController extends HttpServlet {
     
     protected void loadHeaderFooter(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
+//        Account account = (Account)request.getSession().getAttribute("account");
+//        request.setAttribute("account", account);
+//        request.setAttribute("dob", account.getDob().toString());
         String home_href = "/Assignment-PRJ301/home";
         String login_href = "/Assignment-PRJ301/account/login";
         String login_href_value = "Login";
@@ -68,11 +74,14 @@ public class HomeController extends HttpServlet {
         if (request.getSession().getAttribute("account") == null){
             logout_href = "";
             logout_href_value = "";
+            
         }else{
             login_href_value = "Hello, ";
+            register_href = "";
+            register_href_value = "";
             Account account = (Account)request.getSession().getAttribute("account");
             login_href_value += account.getDisplayName();
-            login_href = "/Assignment-PRJ301/account";
+            login_href = "/Assignment-PRJ301/account/update";
         }
         request.setAttribute("home_href", home_href);
         request.setAttribute("login_href", login_href);
@@ -88,6 +97,11 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         loadHeaderFooter(request, response);
+        MovieDBContext mdb = new MovieDBContext();
+        ArrayList<Movie> movies = new ArrayList<>();
+        movies = mdb.getMovies();
+        request.setAttribute("movies", movies);
+        request.setAttribute("pageInclude", "/view/movie/list.jsp");
         request.getRequestDispatcher("/view/home.jsp").forward(request, response);
     }
 

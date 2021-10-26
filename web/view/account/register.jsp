@@ -36,8 +36,8 @@
            pattern="(?=.*\d)(?=.*[a-z]).{8,}"
            title="Must contain at least one  number and lowercase letter, and at least 8 or more characters"
            placeholder="Password"/><br/>           
-    Gender: <input type="radio" required ${requestScope.gender ? "checked" : ""} name="gender" value="true"/> Male
-    <input type="radio" required ${requestScope.gender ? "checked" : ""} name="gender" value="false"/> Female<br/>
+    Gender: <input type="radio" required ${requestScope.gender ? "checked=\"checked\"" : ""} name="gender" value="true"/> Male
+    <input type="radio" required ${!requestScope.gender ? "checked=\"checked\"" : ""} name="gender" value="false"/> Female<br/>
     Dob: <input type="date" name="dob" value="${requestScope.dob}" required/> <br/>
     <input type="submit" value="Register"/>
 </form>

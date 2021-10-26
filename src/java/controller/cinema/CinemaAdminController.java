@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.account;
+package controller.cinema;
 
-import controller.HomeController;
-import dal.AccountDBContext;
+import dal.CinemaDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.account.Account;
+import model.cinema.Cinema;
 
 /**
  *
  * @author Ducky
  */
-public class UpdateAccountController extends HomeController {
+public class CinemaAdminController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class UpdateAccountController extends HomeController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateAccountController</title>");            
+            out.println("<title>Servlet CinemaAdminController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateAccountController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CinemaAdminController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,18 +59,13 @@ public class UpdateAccountController extends HomeController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account account = (Account)request.getSession().getAttribute("account");
-        if (account != null){
-            request.setAttribute("account", account);
-            request.setAttribute("dob", account.getDob().toString());
-            request.setAttribute("pageInclude", "/view/account/update.jsp");
-            super.loadHeaderFooter(request, response);
-            request.getRequestDispatcher("../view/home.jsp").forward(request, response);
-        }else{
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-        
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+        CinemaDBContext cdb = new CinemaDBContext();
+        cinemas = cdb.getCinemas();
+        request.setAttribute("cinemas", cinemas);
+//        request.setAttribute("isHave", cdb.getCinemas());
+//        response.getWriter().write();
+        request.getRequestDispatcher("../view/cinema/details.jsp").forward(request, response);
     }
 
     /**
@@ -83,26 +78,8 @@ public class UpdateAccountController extends HomeController {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { 
-        
-        String displayName = request.getParameter("displayName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        Date dob = Date.valueOf(request.getParameter("dob"));
-        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
-        
-        Account account = (Account)request.getSession().getAttribute("account");
-        account.setDisplayName(displayName);
-        account.setEmail(email);
-        account.setPhone(phone);
-        account.setDob(dob);
-        account.setGender(gender);
-        AccountDBContext adb = new AccountDBContext();
-        adb.updateAccount(account);
-        request.setAttribute("account", account);
-        request.setAttribute("pageInclude", "/view/account/update.jsp");
-        super.loadHeaderFooter(request, response);
-        request.getRequestDispatcher("../view/home.jsp").forward(request, response);
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

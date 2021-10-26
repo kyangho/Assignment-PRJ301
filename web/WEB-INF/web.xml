@@ -20,6 +20,30 @@
         <servlet-name>UpdateAccountController</servlet-name>
         <servlet-class>controller.account.UpdateAccountController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MovieListsController</servlet-name>
+        <servlet-class>controller.movie.MovieListsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovieAdminController</servlet-name>
+        <servlet-class>controller.movie.MovieAdminController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovieUpdateController</servlet-name>
+        <servlet-class>controller.movie.MovieUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovieInsertController</servlet-name>
+        <servlet-class>controller.movie.MovieInsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CinemaAdminController</servlet-name>
+        <servlet-class>controller.cinema.CinemaAdminController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CinemaRowSeatController</servlet-name>
+        <servlet-class>controller.cinema.CinemaRowSeatController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/account/login</url-pattern>
@@ -58,6 +82,30 @@
     <servlet-mapping>
         <servlet-name>UpdateAccountController</servlet-name>
         <url-pattern>/account/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieListsController</servlet-name>
+        <url-pattern>/movie/lists</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieAdminController</servlet-name>
+        <url-pattern>/admin/movie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieUpdateController</servlet-name>
+        <url-pattern>/admin/movie/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieInsertController</servlet-name>
+        <url-pattern>/admin/movie/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CinemaAdminController</servlet-name>
+        <url-pattern>/admin/cinema</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CinemaRowSeatController</servlet-name>
+        <url-pattern>/cinema/rowseat</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>

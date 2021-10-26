@@ -94,7 +94,7 @@ public class AccountDBContext extends DBContext {
     }
 
     public Account getAccount(String username, String password) {
-        String sql = "SELECT a.[username], a.[password], a.[displayname],a.[dob] ,a.[email], a.[phone], f.[url], g.[gname]\n"
+        String sql = "SELECT a.[username], a.[password], a.[displayname],a.[dob] ,a.[email],a.[gender] ,a.[phone], f.[url], g.[gname]\n"
                 + " FROM [Account] as a\n"
                 + " LEFT JOIN [GroupAccount] as gc ON a.[username] = gc.[username]\n"
                 + " LEFT JOIN [Group] as g ON g.[gid] = gc.[gid]\n"
@@ -111,6 +111,7 @@ public class AccountDBContext extends DBContext {
                 account.setEmail(rs.getString("email"));
                 account.setPhone(rs.getString("phone"));
                 account.setDob(Date.valueOf(rs.getString("dob")));
+                account.setGender(rs.getBoolean("gender"));
                 String url = rs.getString("url");
                 if (url != null) {
                     Feature f = new Feature(url);
@@ -122,5 +123,29 @@ public class AccountDBContext extends DBContext {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public boolean updateAccount(Account account){
+        String sql = "UPDATE [Account]\n" +
+                "   SET [displayname] = ?\n" +
+                "      ,[email] = ?\n" +
+                "      ,[phone] = ?\n" +
+                "      ,[dob] = ?\n" +
+                "      ,[gender] = ?\n" +
+                " WHERE [username] = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, account.getDisplayName());
+            stm.setString(2, account.getEmail());
+            stm.setString(3, account.getPhone());
+            stm.setDate(4, account.getDob());
+            stm.setBoolean(5, account.isGender());
+            stm.setString(6, account.getUsername());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
     }
 }

@@ -5,6 +5,7 @@
  */
 package controller.auth;
 
+import controller.HomeController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ import model.account.Feature;
  *
  * @author Ducky
  */
-public abstract class BaseRequiredAuthController extends HttpServlet {
+public abstract class BaseRequiredAuthController extends HomeController {
 
     public boolean isAuthenticated(HttpServletRequest request){
         Account account = (Account)request.getSession().getAttribute("account");
@@ -52,7 +53,8 @@ public abstract class BaseRequiredAuthController extends HttpServlet {
         if (isAuthenticated(request)){
             processGet(request, response);
         }else{
-            response.getWriter().print("access denied");
+            super.loadHeaderFooter(request, response);
+            response.sendRedirect(request.getContextPath() + "/home");
         }
         
     }

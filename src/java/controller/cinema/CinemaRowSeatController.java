@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.auth;
+package controller.cinema;
 
-import controller.HomeController;
-import dal.AccountDBContext;
+import dal.CinemaDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.account.Account;
+import model.cinema.Cinema;
 
 /**
  *
  * @author Ducky
  */
-public class LoginController extends HomeController {
-
+public class CinemaRowSeatController extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -31,17 +30,13 @@ public class LoginController extends HomeController {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Boolean isFailed = null;
-        
-        try{
-            isFailed = Boolean.parseBoolean(request.getParameter("isFailed"));
-        }catch(Exception e){
-            request.setAttribute("isFailed", null);
-        }
-        request.setAttribute("pageInclude", "/view/auth/login.jsp");
-        super.loadHeaderFooter(request, response);
-        request.getRequestDispatcher("../view/home.jsp").forward(request, response);
+            throws ServletException, IOException{
+        int id = Integer.parseInt(request.getParameter("id").trim());
+        CinemaDBContext cdb = new CinemaDBContext();
+        Cinema cinema = cdb.getCinema(id);
+        request.setAttribute("cinema", cinema);
+        RequestDispatcher view = request.getRequestDispatcher("../view/cinema/rowseat.jsp");
+        view.include(request, response);
     }
 
     /**
@@ -55,20 +50,6 @@ public class LoginController extends HomeController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        AccountDBContext adb = new AccountDBContext();
-        Account account = adb.getAccount(username, password);
-        if (account != null){
-            request.setAttribute("isFailed", true);
-            request.getSession().setAttribute("account", account);
-            response.sendRedirect(request.getContextPath() + "/home");
-        }else{
-            request.setAttribute("isFailed", false);
-            request.getSession().setAttribute("account", null);
-            response.sendRedirect(request.getContextPath() + "/account/login");
-        }
     }
 
     /**
