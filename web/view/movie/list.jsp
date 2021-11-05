@@ -6,37 +6,65 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 
-<c:forEach items="${requestScope.movies}" var="movie">
-    <div style="display: block; height: 300px; width: 80%; margin: auto">
-        <div style="width: 20%; float: left; display: block" ><img src="${movie.urlImage}" alt="${movie.name}" width="200" height="300"></div>
-        <div style="float: right; width: calc(80% - 20px); height: 280px; padding: 10px">
-            <h2 style="margin: 0px">${movie.name}</h2><br/>
-            <div class="movie-director movie-info">
-                <label style="display: inline-block;">Đạo diễn: </label>
-                <div class="std" style="display: inline-block;">${movie.director}</div>
+<!DOCTYPE html>
+<script>
+$(document).ready(function () {
+    let movieId;
+    $(".movie-header").click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        movieId = $(this).attr("value");
+        var popup = '.popup-' + movieId;
+        $(popup).prop("style", "visibility: visible");
+        $(this).closest(".movie-container").addClass("show-popup");
+        console.log('a');
+    });
+    $(".popup").click(function(e) {
+        console.log('b');
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        $(".popup").prop("style", "visibility: hidden;");
+        $(".movie-container").removeClass("show-popup");
+        return false;
+    });
+
+});
+</script>
+
+<div class="movie-container">
+    <div class="movie-card-container">
+        <c:forEach items="${requestScope.movies}" var="movie">
+            <div class="movie-card">
+                <div class="movie-header movie-image" value="${movie.id}" style="background: url(${movie.urlImage})">
+                    <div class="header-icon-container">
+                        <i class="material-icons header-icon"></i>
+                    </div>
+                </div><!--movie-header-->
+                <div class="movie-content">
+                    <div class="movie-content-header">
+                        <a href="#">
+                            <h3 class="movie-title">${movie.name}</h3>
+                        </a>
+                    </div>
+                    <div class="movie-info">
+                        <div class="info-section">
+                            <label>Ngày khởi chiếu</label>
+                            <span>${movie.runningTime}</span>
+                        </div><!--date,time-->
+                        <div class="info-section">
+                            <label>Thể loại</label>
+                            <span>${movie.rated}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="movie-cast movie-info">
-                <label style="display: inline-block;">Diễn viên: </label>
-                <div class="std" style="display: inline-block;">${movie.cast}</div>
+            <div class="popup-container">
+                <div class="popup popup-${movie.id}" style="visibility: hidden" id="media-popup">
+                    ${movie.urlTrailer}
+                </div>  
             </div>
-            <div class="movie-genre movie-info">
-                <label style="display: inline-block;">Thể loại: </label>
-                <div class="std" style="display: inline-block;"><c:forEach items="${movie.genre}" var="genre" varStatus="loop"><c:if test="${loop.index == 0}">${genre.genre}</c:if><c:if test="${loop.index != 0}">, ${genre.genre}</c:if></c:forEach></div>
-            </div>
-            <div class="movie-running-time movie-info">
-                <label style="display: inline-block;">Ngày khởi chiếu:  </label>
-                <div class="std" style="display: inline-block;">${movie.runningTime}</div>
-            </div>
-            <div class="movie-language movie-info">
-                <label style="display: inline-block;">Ngôn ngữ: </label>
-                <div class="std" style="display: inline-block;"><c:forEach items="${movie.languages}" var="language" varStatus="loop"><c:if test="${loop.index == 0}">${language.language}</c:if><c:if test="${loop.index != 0}">, ${language.language}</c:if></c:forEach></div>
-            </div>
-            <div class="movie-rated movie-info">
-                <label style="display: inline-block;">Độ tuổi: </label>
-                <div class="std" style="display: inline-block;">${movie.rated}</div>
-            </div>
-        </div>
-    </div><br/>
-</c:forEach>
+        </c:forEach>
+    </div>
+</div>

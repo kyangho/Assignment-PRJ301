@@ -5,48 +5,29 @@
  */
 package controller.cinema;
 
+import controller.HomeController;
 import dal.CinemaDBContext;
+import dal.MovieDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.cinema.Cinema;
+import model.movie.Movie;
 
 /**
  *
  * @author Ducky
  */
-public class CinemaAdminController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CinemaAdminController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CinemaAdminController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+public class CinemaBookingController extends HomeController {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -59,13 +40,27 @@ public class CinemaAdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<Cinema> cinemas = new ArrayList<>();
+        request.getSession().setAttribute("isBooking", true);
+        
+        ArrayList<Cinema> cinemasNow = new ArrayList<>();
+        
         CinemaDBContext cdb = new CinemaDBContext();
-        cinemas = cdb.getCinemas();
+        
+        java.util.Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String now = sdf.format(date);
+        cinemasNow = cdb.getCinemasAfterNow(now);
+        
+        ArrayList<Cinema> cinemas = cdb.getCinemas();
+
+        request.setAttribute("cinemasNow", cinemasNow);
         request.setAttribute("cinemas", cinemas);
+        
 //        request.setAttribute("isHave", cdb.getCinemas());
 //        response.getWriter().write();
-        request.getRequestDispatcher("../view/cinema/details.jsp").forward(request, response);
+        loadHeaderFooter(request, response);
+        request.setAttribute("pageInclude", "/view/cinema/details.jsp");
+        request.getRequestDispatcher("../view/home.jsp").forward(request, response);
     }
 
     /**
@@ -79,7 +74,17 @@ public class CinemaAdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CinemaDBContext cdb = new CinemaDBContext();
+        int movieid = Integer.parseInt(request.getParameter("movieid"));
+        Date day = Date.valueOf(request.getParameter("day"));
+        MovieDBContext mdb = new MovieDBContext();
+        ArrayList<Movie> movies = mdb.getMoviesByDate(day);
+        response.setCharacterEncoding("UTF-8");
+        if (movies.isEmpty()) {
+            response.getWriter().print("Xin lỗi, không có xuất chiếu vào ngày này, hãy chọn một ngày khác.");
+        }else{
+            response.getWriter().print("");
+        }
     }
 
     /**

@@ -5,21 +5,29 @@
  */
 package controller.cinema;
 
+import controller.HomeController;
 import dal.CinemaDBContext;
+import dal.MovieDBContext;
+import dal.TicketDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.cinema.Cinema;
+import model.cinema.PerformanceNumber;
+import model.movie.Movie;
+import model.ticket.Price;
 
 /**
  *
  * @author Ducky
  */
-public class CinemaRowSeatController extends HttpServlet {
+public class CinemaRowSeatController extends HomeController {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -31,12 +39,51 @@ public class CinemaRowSeatController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        int id = Integer.parseInt(request.getParameter("id").trim());
+        Boolean isBooking = (Boolean)request.getSession().getAttribute("isBooking");
+        if(isBooking == null || !isBooking){
+            response.sendRedirect(request.getContextPath() + "/home");
+            return;
+        }
+        int cinemaId = Integer.parseInt(request.getParameter("id").split("-")[0].trim());
+        int movieid = Integer.parseInt(request.getParameter("movieid"));
+        Date day = Date.valueOf(request.getParameter("day"));
+        int pn = Integer.parseInt(request.getParameter("id").split("-")[1].trim());
+        
+        MovieDBContext mdb = new MovieDBContext();
         CinemaDBContext cdb = new CinemaDBContext();
-        Cinema cinema = cdb.getCinema(id);
+        
+        Movie movie = mdb.getMovie(Integer.parseInt(request.getParameter("movieid")));
+        Cinema cinema = cdb.getCinema(cinemaId);
+        
+        int[][] seats = cdb.getSeatBooked(cinemaId, movieid, pn, day);
+        
+        PerformanceNumber performanceNumber = new PerformanceNumber();
+        for (PerformanceNumber pnumber : cinema.getPerformanceNumbers()){
+            if (pnumber.getNumber() == pn){
+                performanceNumber = pnumber;
+            }
+        }
+        
+        TicketDBContext tdb = new TicketDBContext();
+        Price standardPrice = tdb.getStandardPrice(day);
+        Price vipprimePrice = tdb.getVipprimePrice(day);
+        request.setAttribute("standardPrice", standardPrice);
+        request.setAttribute("vipprimePrice", vipprimePrice);
+        request.setAttribute("movie", movie);
         request.setAttribute("cinema", cinema);
-        RequestDispatcher view = request.getRequestDispatcher("../view/cinema/rowseat.jsp");
-        view.include(request, response);
+        request.setAttribute("day", day);
+        request.setAttribute("seats", seats);
+        
+        request.setAttribute("performance", performanceNumber);
+        request.getSession().setAttribute("movie", movie);
+        request.getSession().setAttribute("cinema", cinema);
+        request.getSession().setAttribute("day", day);
+        request.getSession().setAttribute("performance", performanceNumber);
+//        request.setAttribute("day", Date.valueOf(request.getParameter("day")));
+        request.setCharacterEncoding("UTF-8");
+        loadHeaderFooter(request, response);
+        request.setAttribute("pageInclude", "/view/cinema/rowseat.jsp");
+        request.getRequestDispatcher("../view/home.jsp").forward(request, response);
     }
 
     /**
@@ -50,6 +97,7 @@ public class CinemaRowSeatController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
     }
 
     /**

@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -97,6 +97,7 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         loadHeaderFooter(request, response);
+        request.getSession().removeAttribute("isBooking");
         MovieDBContext mdb = new MovieDBContext();
         ArrayList<Movie> movies = new ArrayList<>();
         movies = mdb.getMovies();
@@ -104,7 +105,6 @@ public class HomeController extends HttpServlet {
         request.setAttribute("pageInclude", "/view/movie/list.jsp");
         request.getRequestDispatcher("/view/home.jsp").forward(request, response);
     }
-
 
     /**
      * Returns a short description of the servlet.

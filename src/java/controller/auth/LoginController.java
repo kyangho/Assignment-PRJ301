@@ -9,6 +9,7 @@ import controller.HomeController;
 import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,11 +62,12 @@ public class LoginController extends HomeController {
         AccountDBContext adb = new AccountDBContext();
         Account account = adb.getAccount(username, password);
         if (account != null){
-            request.setAttribute("isFailed", true);
+            request.setAttribute("isFailed", false);
+            request.getSession().setAttribute("account", account);
             request.getSession().setAttribute("account", account);
             response.sendRedirect(request.getContextPath() + "/home");
         }else{
-            request.setAttribute("isFailed", false);
+            request.setAttribute("isFailed", true);
             request.getSession().setAttribute("account", null);
             response.sendRedirect(request.getContextPath() + "/account/login");
         }

@@ -1,0 +1,438 @@
+/*header*/
+
+.header-container{
+    background: url(../../img/borderImage.png) repeat-x scroll left bottom transparent;
+}
+/*body*/
+body, button, input, select, table, textarea {
+    font-family: Verdana, Arial, sans-serif;
+    color: #222;
+    font-size: 14px;
+    line-height: 18px;
+}
+html, body{
+    background-color: rgb(253, 252, 240) !important; 
+}
+
+
+h2{
+    font-size: 24px !important;
+    padding: 4px 0;
+}
+/*Login.jsp*/
+.login-container{
+    min-height: 60%;
+}
+.login_btn{
+    background-color: #56baed !important;
+    color: white !important;
+}
+.login_btn:hover{
+    background-color: #39ace7 !important;
+}
+.card-container{
+    border-radius: 10px 10px 10px 10px;
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    padding: 0px;
+    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    vertical-align: middle !important;
+}
+/*register.jsp*/
+.register-container{
+    min-height: 80%;
+}
+/*rowseat.jsp*/
+ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+    clear: both;
+}
+
+.quick-booking li{
+    list-style-type: none;
+    list-style-position: outside;
+    padding: 10px;
+    float: left;
+}
+.seat-standard + label{
+    border: 1px solid #01c73c !important;
+}
+.seat-vipprime + label{
+    border: 1px solid #f71708 !important;
+}
+.coolTable  label {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid black;
+    color: black;
+    background-color: white;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.coolTable{
+    width: 23px;
+    height: 23px;
+}
+.coolTable label{
+    cursor: default;
+    width: 50px;
+    height: 40px;
+}
+.coolTable input{
+    display:none;
+}
+.cinema::after, .clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.clearfix{
+    content: '';
+    clear: both;
+}
+.seat.checked + label{
+    background: #b11500 !important;
+    border-color: #b11500 !important;
+}
+.seat.booked + label{
+    background: #bbb !important;
+    border-color: #bbb !important;
+}
+
+.table-title{
+    text-align: center;
+    font-size: 2em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+/*details*/
+ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+    clear: both;
+}
+
+.quick-booking li{
+    list-style-type: none;
+    list-style-position: outside;
+    padding: 10px;
+    float: left;
+}
+
+.showTimes label {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid black;
+    color: black;
+    background-color: white;
+    margin-bottom: 10px;
+}
+.showTimes label:hover{
+    background: black;
+    color: white;
+}
+.showTimes input[type="checkbox"]:checked + label{
+    background: black;
+    color: white;
+}
+.showTimes input{
+    display:none;
+}
+.cinema::after, .clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+li.current > .day{
+    border-color: black;
+}
+.day > span{
+    color: #717171;
+    font-size: 11px;
+    left: 4px;position: absolute;
+    top: 4px;
+}
+.day > em{
+    color: #717171;
+    font-size: 11px;
+    font-style: normal;
+    left: 4px;
+    position: absolute;
+    top: 20px;
+}
+.day > strong{
+    color: #717171;
+    font-size: 32px;
+    font-weight: normal;
+    left: 31px;
+    line-height: 32px;
+    position: absolute;
+    top: 8px;
+}
+.day{
+    border: 2px solid #fdfcf0;
+    border-radius: 5px;
+    color: #717171;
+    cursor: pointer;
+    height: 48px;
+    position: relative;
+    width: 77px;
+}
+.day:hover{
+    border-color: black;
+}
+
+.clearfix{
+    content: '';
+    clear: both;
+}
+
+/*ticket.jsp*/
+.minicart-wrapper{
+    font-size: 0;
+    color: #cccccc;
+    width: 750px;
+    display: inline-block;
+    margin: 0 3px;
+
+}
+.minicart-wrapper img {
+    width: 74px;
+    height: 108px;
+    display: inline-block;
+}
+minicart-wrapper ul{
+    width: 80%;
+}
+.minicart-wrapper ul li{
+    list-style: none;
+    float: left;
+}
+.minicart-wrapper .item {
+    display: inline-block;
+    width: 31%;
+    margin-left:1%;
+    font-size: 12px;
+}
+.info-wrapper td {
+    padding: 0 5px;
+    font-weight: bold;
+    white-space: normal;
+    vertical-align: top;
+}
+
+.btn-right{
+    background-color: #e71a0f;
+    border-radius: 30px;
+}
+.btn-left{
+    background-color: #e71a0f;
+    border-radius: 30px;
+}
+.btn-left, .btn-right{
+    float: none;
+    width: 103px;
+    display: inline-block;
+    margin: 0 0 0 3px;
+    height: calc(108px / 3 * 2);
+    vertical-align: top;
+    color: #fff;
+}
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/*Movie list*/
+.movie-container {
+    height: 100%;
+    width: 100%;
+    font-family: 'Arimo', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #010b26;
+}
+
+.movie-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+.movie-card-container a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.movie-card-container a:hover {
+    color: #6ABCEA;
+}
+.movie-card {
+    background: #ffffff;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 315px;
+    margin: 2em;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.movie-header {
+    padding: 0;
+    margin: 0;
+    height: 367px;
+    width: 100%;
+    display: block;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.movie-image {
+    background-size: cover !important;
+    background-position: 100% 100% !important;
+}
+
+
+.header-icon-container {
+    position: relative;
+}
+
+.header-icon {
+    width: 100%;
+    height: 367px;
+    line-height: 367px !important;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;
+    color: #ffffff;
+    font-size: 54px !important;
+    text-shadow: 0px 0px 20px #6abcea, 0px 5px 20px #6ABCEA;
+    opacity: .85;
+}
+
+.header-icon:hover {
+    background: rgba(0, 0, 0, 0.15);
+    font-size: 74px;
+    text-shadow: 0px 0px 20px #6abcea, 0px 5px 30px #6ABCEA;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    opacity: 1;
+}
+
+.movie-card:hover {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.movie-content {
+    padding: 18px 18px 24px 18px;
+    margin: 0;
+}
+
+.movie-content-header, .movie-info {
+    display: table;
+    width: 100%;
+}
+
+.movie-title {
+    font-size: 24px;
+    margin: 0;
+    display: table-cell;
+}
+
+.imax-logo {
+    width: 50px;
+    height: 15px;
+    background: url("https://6a25bbd04bd33b8a843e-9626a8b6c7858057941524bfdad5f5b0.ssl.cf5.rackcdn.com/media_kit/3e27ede823afbf139c57f1c78a03c870.jpg") no-repeat;
+    background-size: contain;
+    display: table-cell;
+    float: right;
+    position: relative;
+    margin-top: 5px;
+}
+
+.movie-info {
+    margin-top: 1em;
+}
+
+.info-section {
+    display: table-cell;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.info-section:first-of-type {
+    text-align: left;
+}
+
+.info-section:last-of-type {
+    text-align: right;
+}
+
+.info-section label {
+    display: block;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: .5em;
+    font-size: 9px;
+}
+
+.info-section span {
+    font-weight: 700;
+    font-size: 11px;
+}
+
+@media screen and (max-width: 500px) {
+    .movie-card {
+        width: 95%;
+        max-width: 95%;
+        margin: 1em;
+        display: block;
+    }
+
+    .movie-container {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+/*Pop up*/
+.popup {
+    position:absolute;
+    z-index:2;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.4);
+    visibility: hidden;
+    opacity:0;
+    transition:.3s ease;
+}
+
+.show-popup .popup {
+    opacity:1;
+    visibility: visible;    
+}
+
+.popup > iframe {
+    width: 50%;
+    height: 50%;
+    position:absolute;
+    top:50px;
+    left:50%;
+    margin-left:-280px;
+}

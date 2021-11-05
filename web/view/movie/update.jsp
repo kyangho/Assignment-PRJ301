@@ -10,11 +10,11 @@
 
 <!DOCTYPE html>
 <script>
-    function activeInput(target){
+    function activeInput(target) {
         var inputs = document.querySelectorAll('input.std');
         inputs[target].removeAttribute('disabled');
     }
-    function activeAllInput(){
+    function activeAllInput() {
         var inputs = document.querySelectorAll('input');
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].removeAttribute('disabled');
@@ -54,15 +54,15 @@
         </div>
         <div class="movie-running-time movie-info">
             <label style="display: inline-block;">Ngày khởi chiếu:  </label>
-             <input type="date" disabled class="std" name="runningTime" value="${requestScope.movie.runningTime}"
-                    style="display: inline-block;">
-             <input type="button" value="edit" onclick="activeInput(3)"><br/>
+            <input type="date" disabled class="std" name="runningTime" value="${requestScope.movie.runningTime}"
+                   style="display: inline-block;">
+            <input type="button" value="edit" onclick="activeInput(3)"><br/>
         </div>
         <div class="movie-running-time movie-info">
             <label style="display: inline-block;">Ngày chiếu:  </label>
-             <input type="date" disabled class="std" name="toShowing" value="${requestScope.movie.movieShowing.fromShowing}"
-                    style="display: inline-block;">
-             <input type="button" value="edit" onclick="activeInput(4)"><br/>
+            <input type="date" disabled class="std" name="toShowing" value="${requestScope.movie.movieShowing.fromShowing}"
+                   style="display: inline-block;">
+            <input type="button" value="edit" onclick="activeInput(4)"><br/>
         </div>
         <div class="movie-running-time movie-info">
             <label style="display: inline-block;">Ngày dừng chiếu:  </label>
@@ -108,9 +108,21 @@
             <input type="text" disabled class="std" name="urlTrailer" style="display: inline-block;" value="${requestScope.movie.urlTrailer}">
             <input type="button" value="edit" onclick="activeInput(10)"><br/>
         </div>
-            <input type="hidden" name="id" value="${param.id}">
+        <div class="cinema-id movie-info">
+            <label style="display: inline-block;">Rạp: </label>
+            <c:forEach items="${requestScope.cinemas}" var="cinema">
+                <c:set var="isHave" value="false"></c:set>
+                <c:forEach items="${requestScope.movie.languages}" var="language">
+                    <c:if test="${fn:contains(movieLanguage.language, language.language)}">
+                        <c:set var="isHave" value="true"></c:set>
+                    </c:if>
+                </c:forEach>
+                <input type="checkbox" name="cinema" value="${cinema.id}" >${cinema.name}
+            </c:forEach>
+        </div>
+        <input type="hidden" name="id" value="${param.id}">
         <input type="submit" value="Save" onclick="activeAllInput()">
     </div>
-    
+
 </form>
-        <div style="display:block">${requestScope.movie.urlTrailer}</div>
+<div style="display:block">${requestScope.movie.urlTrailer}</div>

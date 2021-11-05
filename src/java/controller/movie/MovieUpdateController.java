@@ -5,6 +5,7 @@
  */
 package controller.movie;
 
+import dal.CinemaDBContext;
 import dal.MovieDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,9 +44,11 @@ public class MovieUpdateController extends HttpServlet {
         movieLanguages = mdb.getMovieLanguages();
         ArrayList<MovieGenre> movieGenres = new ArrayList<>();
         movieGenres = mdb.getMovieGenres();
+        CinemaDBContext cdb = new CinemaDBContext();
         request.setAttribute("movie", movie);
         request.setAttribute("movieLanguages", movieLanguages);
         request.setAttribute("movieGenres", movieGenres);
+        request.setAttribute("cinemas", cdb.getCinemas());
         request.getRequestDispatcher("../../view/movie/update.jsp").forward(request, response);
     }
 

@@ -6,6 +6,7 @@
 package dal;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ import model.movie.MovieShowing;
  * @author Ducky
  */
 public class MovieDBContext extends DBContext{
-    public ArrayList<Movie> getMovies() throws UnsupportedEncodingException{
+    public ArrayList<Movie> getMovies(){
         String sql = "SELECT [movie_id]\n" +
                     "      ,[movie_name]\n" +
                     "      ,[movie_director]\n" +
@@ -108,7 +109,7 @@ public class MovieDBContext extends DBContext{
         }
         return movies;
     }
-    public Movie getMovie(int id) throws UnsupportedEncodingException{
+    public Movie getMovie(int id){
         String sql = "SELECT [movie_id]\n" +
                     "      ,[movie_name]\n" +
                     "      ,[movie_director]\n" +
@@ -238,6 +239,19 @@ public class MovieDBContext extends DBContext{
         }
         
         return genres;
+    }
+    public ArrayList<Movie> getMoviesByDate(Date date){
+        MovieDBContext mdb = new MovieDBContext();
+        ArrayList<Movie> movies = mdb.getMovies();
+        ArrayList<Movie> rsMovies = new ArrayList<>();
+        for (Movie m : movies){
+            if (m.getMovieShowing().getFromShowing().compareTo(date) <= 0
+                    && m.getMovieShowing().getToShowing().compareTo(date)  >= 0){
+                rsMovies.add(m);
+            }else{
+            }
+        }
+        return rsMovies;
     }
     public boolean updateMovie(Movie movie){
         String sql_movie = "UPDATE [Movie]\n" +

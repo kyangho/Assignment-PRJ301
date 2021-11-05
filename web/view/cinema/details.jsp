@@ -4,69 +4,140 @@
     Author     : Ducky
 --%>
 
+<%@page import="java.util.Calendar"%>
+<%@page import="java.sql.Date"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/app-ajax.js" type="text/javascript"></script>
-        <style>
-            ul {
-                padding: 0;
-                margin: 0;
-                clear: both;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("input[class='performance']").on('change', function () {
+            $("input[class='performance']").not(this).prop('checked', false);
+            var id = $(this).val();
+            let searchParams = new URLSearchParams(window.location.search);
+            let movieid;
+            if (searchParams.has('movieid')) {
+                movieid = searchParams.get('movieid');
             }
-
-            li{
-                list-style-type: none;
-                list-style-position: outside;
-                padding: 10px;
-                float: left;
+            let day = $("li[class='current']").attr("value");
+            window.location.href = "../cinema/rowseat?id=" + id + "&movieid=" + movieid + "&day=" + day
+        });
+    });
+    
+    $(document).ready(function () {
+        $("div[class='day']").click(function () {
+            $("div[class='day']").parent("li").not($(this).parent("li")).prop("class", '');
+            $(this).parent("li").prop("class", 'current');
+            let day = $("li[class='current']").attr("value");
+            let searchParams = new URLSearchParams(window.location.search);
+            let movieid;
+            if (searchParams.has('movieid')) {
+                movieid = searchParams.get('movieid');
             }
-
-            label {
-                display: inline-block;
-                padding: 10px;
-                cursor: pointer;
-                border: 1px solid black;
-                color: black;
-                background-color: white;
-                margin-bottom: 10px;
-            }
-            label:hover{
-                background: black;
-                color: white;
-            }
-            input[type="checkbox"]:checked + label{
-                background: black;
-                color: white;
-            }
-            input{
-                display:none;
-            }
-            .cinema::after {
-                content: '';
-                display: block;
-                clear: both;
-            }
-        </style>
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <div class="cinema">
-            <ul>
-                <c:forEach items="${requestScope.cinemas}" var="cinema">
-                    <li>
-                        <input type="checkbox" class="name" id="${cinema.id}" name="name" value="${cinema.id}">
-                        <label for="${cinema.id}">${cinema.name}</label>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-        <div id="rowSeat-view" style="width: 100%">
             
-        </div>
-    </body>
-</html>
+            var date = new Date();
+
+            var output = date.getFullYear() + '-' +
+                (date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1) + '-' +
+                (date.getDate() < 10 ? '0' : '') + date.getDate();
+        
+            
+            if ($("li[class='current']").attr("value") == output){
+                $("ul[class='showTimes now']").prop("style", "");
+                $("ul[class='showTimes']").prop("style", "display:none");
+            }else{
+                $("ul[class='showTimes now']").prop("style", "display:none");
+                $("ul[class='showTimes']").prop("style", "");
+            }
+            $.ajax({
+                type: 'post',
+                url: '../cinema/booking',
+                data: {movieid: movieid, day: day},
+                success: function (responseText) {
+                    if (responseText != "") {
+                        $('#isNullMovie').text(responseText);
+                        $('.showTimes').prop("style", "display:none")
+                    } else {
+                        $('#isNullMovie').text("");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<body>
+
+    <div class="quick-booking clearfix">
+        <ul class="toggle-tabs">
+            <%Calendar cal = Calendar.getInstance();
+                cal.getTime();
+            %>
+            <c:set var="now" value="<%=cal%>"></c:set>
+            <fmt:formatDate var="day" value="${now.getTime()}" pattern="yyyy-MM-dd"/>
+            <li class="current" value="${day}">
+                <div class="day">
+                    <span><fmt:formatDate value="${now.getTime()}" pattern="MM"/></span>
+                    <em><fmt:formatDate value="${now.getTime()}" pattern="EE"/></em>
+                    <strong><fmt:formatDate value="${now.getTime()}" pattern="dd"/></strong>
+                </div>
+                <%cal.add(Calendar.DATE, 1);%>
+            </li>
+            <c:forEach begin="1" end="13" varStatus="i">
+                <fmt:formatDate var="day" value="${now.getTime()}" pattern="yyyy-MM-dd"/>
+                <li class value="${day}">
+                    <div class="day">
+                        <span><fmt:formatDate value="${now.getTime()}" pattern="MM"/></span>
+                        <em><fmt:formatDate value="${now.getTime()}" pattern="EE"/></em>
+                        <strong><fmt:formatDate value="${now.getTime()}" pattern="dd"/></strong>
+                    </div>
+                </li>
+                <%cal.add(Calendar.DATE, 1);%>
+            </c:forEach>
+        </ul>
+            
+        <div id="isNullMovie" class="clearfix"></div>
+        
+        <ul class="showTimes now" style="">
+            <c:if test="${requestScope.cinemasNow.size() == 0}">
+                <p>Xin lỗi, hiện tại không có rạp nào hoạt động</p>
+            </c:if>
+            <c:forEach items="${requestScope.cinemasNow}" var="cinema">
+                <div class="clearfix">
+                    <li>
+                        <h3>${cinema.name}</h3>
+                        <ul>
+                            <c:forEach items="${cinema.performanceNumbers}" var="performance">
+                                <li>
+                                    <input type="checkbox" class="performance" id="${cinema.id}-${performance.number}" name="performance" value="${cinema.id}-${performance.number}">
+                                    <label for="${cinema.id}-${performance.number}"><fmt:formatDate type="time" timeStyle="short" value="${performance.fromTime}"/></label>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </li>
+                </div>
+            </c:forEach>
+        </ul>
+        
+        <ul class="showTimes" style="display:none">
+            <c:forEach items="${requestScope.cinemas}" var="cinema">
+                <div class="clearfix">
+                    <li>
+                        <h3>${cinema.name}</h3>
+                        <ul>
+                            <c:forEach items="${cinema.performanceNumbers}" var="performance">
+                                <li>
+                                    <input type="checkbox" class="performance" id="${cinema.id}-${performance.number}" name="performance" value="${cinema.id}-${performance.number}">
+                                    <label for="${cinema.id}-${performance.number}"><fmt:formatDate type="time" timeStyle="short" value="${performance.fromTime}"/></label>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </li>
+                </div>
+            </c:forEach>
+        </ul>
+    </div>
+
+</body>
