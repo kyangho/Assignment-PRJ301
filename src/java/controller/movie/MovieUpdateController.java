@@ -5,6 +5,7 @@
  */
 package controller.movie;
 
+import controller.auth.BaseRequiredAuthController;
 import dal.CinemaDBContext;
 import dal.MovieDBContext;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import model.movie.MovieShowing;
  *
  * @author Ducky
  */
-public class MovieUpdateController extends HttpServlet {
+public class MovieUpdateController extends BaseRequiredAuthController {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -35,7 +36,7 @@ public class MovieUpdateController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         MovieDBContext mdb = new MovieDBContext();
@@ -61,7 +62,7 @@ public class MovieUpdateController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         Movie movie = new Movie();

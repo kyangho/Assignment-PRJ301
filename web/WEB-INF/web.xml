@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>PreventFilter</filter-name>
+        <filter-class>filter.PreventFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AuthFiler</filter-name>
+        <filter-class>filter.AuthFiler</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFiler</filter-name>
+        <url-pattern>/cinema/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFiler</filter-name>
+        <url-pattern>/account/logout</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFiler</filter-name>
+        <url-pattern>/account/info</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFiler</filter-name>
+        <url-pattern>/account/update</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFiler</filter-name>
+        <url-pattern>/account/transaction</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PreventFilter</filter-name>
+        <url-pattern>/movie/lists</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>controller.TestServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AccountDetails</servlet-name>
@@ -52,13 +80,17 @@
         <servlet-name>BookingController</servlet-name>
         <servlet-class>controller.ticket.BookingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MovieDetailsController</servlet-name>
+        <servlet-class>controller.movie.MovieDetailsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TransactionController</servlet-name>
+        <servlet-class>controller.account.TransactionController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/account/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/testservlet</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>LogoutController</servlet-name>
@@ -70,7 +102,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountDetails</servlet-name>
-        <url-pattern>/account</url-pattern>
+        <url-pattern>/account/info</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
@@ -123,8 +155,15 @@
         <servlet-name>BookingController</servlet-name>
         <url-pattern>/cinema/booking/ticket</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieDetailsController</servlet-name>
+        <url-pattern>/movie/details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransactionController</servlet-name>
+        <url-pattern>/account/transaction</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
-
 </web-app>

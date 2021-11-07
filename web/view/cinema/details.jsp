@@ -51,17 +51,20 @@
                 $("ul[class='showTimes now']").prop("style", "display:none");
                 $("ul[class='showTimes']").prop("style", "");
             }
+            console.log(movieid + ' ' + day);
             $.ajax({
                 type: 'post',
-                url: '../cinema/booking',
+                url: 'booking',
                 data: {movieid: movieid, day: day},
                 success: function (responseText) {
                     if (responseText != "") {
+                        
                         $('#isNullMovie').text(responseText);
                         $('.showTimes').prop("style", "display:none")
                     } else {
                         $('#isNullMovie').text("");
                     }
+                    
                 }
             });
         });
@@ -69,7 +72,6 @@
 </script>
 
 <body>
-
     <div class="quick-booking clearfix">
         <ul class="toggle-tabs">
             <%Calendar cal = Calendar.getInstance();

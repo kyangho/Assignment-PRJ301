@@ -78,7 +78,7 @@ public class CinemaBookingController extends HomeController {
         int movieid = Integer.parseInt(request.getParameter("movieid"));
         Date day = Date.valueOf(request.getParameter("day"));
         MovieDBContext mdb = new MovieDBContext();
-        ArrayList<Movie> movies = mdb.getMoviesByDate(day);
+        ArrayList<Movie> movies = mdb.getMoviesByDate(movieid, day);
         response.setCharacterEncoding("UTF-8");
         if (movies.isEmpty()) {
             response.getWriter().print("Xin lỗi, không có xuất chiếu vào ngày này, hãy chọn một ngày khác.");

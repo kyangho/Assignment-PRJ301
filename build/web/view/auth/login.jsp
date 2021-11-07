@@ -31,6 +31,9 @@
             <div class="d-flex justify-content-center ">
                 <button type="submit" name="button" class="btn login_btn">Đăng nhập</button>
             </div>
+            <c:if test="${requestScope.isFailed != null}">
+                <div class="col-md-12 text-center text-success">${requestScope.isFailed ? "Tên đăng nhập hoặc mật khẩu không đúng" : ""}</div>
+            </c:if>
             <div class="mt-3">
                 <div class="d-flex justify-content-center">
                     Bạn chưa có tài khoản? <a href="${pageContext.request.contextPath}/account/register" class="ml-2">Đăng kí</a>

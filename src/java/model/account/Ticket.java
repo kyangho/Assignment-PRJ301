@@ -18,11 +18,11 @@ public class Ticket {
     private int seat_number;
     private int movie_id;
     private Date ticket_purchase_date;
-    private int performance_date;
+    private int performance_number;
     private int price_id;
     private float price;
     private int transaction_id;
-
+    
     public Ticket() {
     }
 
@@ -74,12 +74,12 @@ public class Ticket {
         this.ticket_purchase_date = ticket_purchase_date;
     }
 
-    public int getPerformance_date() {
-        return performance_date;
+    public int getPerformance_number() {
+        return performance_number;
     }
 
-    public void setPerformance_date(int performance_date) {
-        this.performance_date = performance_date;
+    public void setPerformance_number(int performance_number) {
+        this.performance_number = performance_number;
     }
 
     public int getPrice_id() {

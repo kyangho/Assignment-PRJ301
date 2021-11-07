@@ -9,10 +9,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.account.Account;
 import model.account.Feature;
+import model.account.Ticket;
+import model.account.Transaction;
+import model.cinema.PerformanceNumber;
 
 /**
  *
@@ -24,8 +28,7 @@ public class AccountDBContext extends DBContext {
         String sql = "SELECT a.[username]\n"
                 + " FROM [Account] as a\n"
                 + " WHERE a.[username] = ?";
-        
-        
+
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
@@ -46,7 +49,7 @@ public class AccountDBContext extends DBContext {
             connection.setAutoCommit(false);
 
             //Check duplicate account
-            if (!isValidAccount(account.getUsername())){
+            if (!isValidAccount(account.getUsername())) {
                 isCorrect = false;
                 return isCorrect;
             }
@@ -94,7 +97,7 @@ public class AccountDBContext extends DBContext {
     }
 
     public Account getAccount(String username, String password) {
-        String sql = "SELECT a.[username], a.[password], a.[displayname],a.[dob] ,a.[email],a.[gender] ,a.[phone], f.[url], g.[gname]\n"
+        String sql = "SELECT a.[username], a.[password], a.[displayname],a.[dob] ,a.[email],a.[gender] ,a.[phone],f.[fid] ,f.[url], g.[gname]\n"
                 + " FROM [Account] as a\n"
                 + " LEFT JOIN [GroupAccount] as gc ON a.[username] = gc.[username]\n"
                 + " LEFT JOIN [Group] as g ON g.[gid] = gc.[gid]\n"
@@ -107,15 +110,22 @@ public class AccountDBContext extends DBContext {
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                Account account = new Account(rs.getString("username"), rs.getString("password"), rs.getString("displayname"));
+                Account account = account = new Account(rs.getString("username"), rs.getString("password"), rs.getString("displayname"));
                 account.setEmail(rs.getString("email"));
                 account.setPhone(rs.getString("phone"));
                 account.setDob(Date.valueOf(rs.getString("dob")));
                 account.setGender(rs.getBoolean("gender"));
-                String url = rs.getString("url");
-                if (url != null) {
-                    Feature f = new Feature(url);
-                    account.getFeatures().add(f);
+                while (rs.next()) {
+                    if (account != null) {
+                        
+                        int fid = rs.getInt("fid");
+                        if (fid != 0) {
+                            Feature f = new Feature();
+                            f.setId(fid);
+                            f.setUrl(rs.getString("url"));
+                            account.getFeatures().add(f);
+                        }
+                    }
                 }
                 return account;
             }
@@ -124,15 +134,15 @@ public class AccountDBContext extends DBContext {
         }
         return null;
     }
-    
-    public boolean updateAccount(Account account){
-        String sql = "UPDATE [Account]\n" +
-                "   SET [displayname] = ?\n" +
-                "      ,[email] = ?\n" +
-                "      ,[phone] = ?\n" +
-                "      ,[dob] = ?\n" +
-                "      ,[gender] = ?\n" +
-                " WHERE [username] = ?";
+
+    public boolean updateAccount(Account account) {
+        String sql = "UPDATE [Account]\n"
+                + "   SET [displayname] = ?\n"
+                + "      ,[email] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[dob] = ?\n"
+                + "      ,[gender] = ?\n"
+                + " WHERE [username] = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, account.getDisplayName());
@@ -147,5 +157,82 @@ public class AccountDBContext extends DBContext {
             return false;
         }
         return true;
+    }
+
+    public int getTransactionCount(String username) {
+        try {
+            String sql = "SELECT COUNT(*) as total FROM [Transaction] WHERE [username] = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public Account getTransactions(Account account, int pageIndex, int pageSize) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        String sql_transaction = "  SELECT t.[transaction_id]\n"
+                + "	  ,t.[transaction_made_date]\n"
+                + "FROM\n"
+                + "(\n"
+                + "SELECT ROW_NUMBER() OVER (ORDER BY tr.[transaction_id] desc) as rownum, tr.[transaction_id], tr.[transaction_made_date]\n"
+                + "FROM [Transaction] as tr\n"
+                + "LEFT JOIN [Account] as a on a.[username] = tr.[username] \n"
+                + "WHERE a.[username] = ?) t\n"
+                + "WHERE \n"
+                + "rownum >= (? - 1)*? + 1 AND rownum <= ? * ?";
+        try {
+            PreparedStatement stm_transaction = connection.prepareStatement(sql_transaction);
+            stm_transaction.setString(1, account.getUsername());
+            stm_transaction.setInt(2, pageIndex);
+            stm_transaction.setInt(3, pageSize);
+            stm_transaction.setInt(4, pageIndex);
+            stm_transaction.setInt(5, pageSize);
+            ResultSet rs_transaction = stm_transaction.executeQuery();
+            while (rs_transaction.next()) {
+                Transaction transaction = new Transaction();
+                transaction.setId(rs_transaction.getInt("transaction_id"));
+                transaction.setTransaction_made_date(rs_transaction.getDate("transaction_made_date"));
+                TicketDBContext tdb = new TicketDBContext();
+                transaction.setTickets(tdb.getTicketsWithTransactionId(transaction.getId()));
+                float price = 0;
+                for (Ticket t : transaction.getTickets()) {
+                    price += t.getPrice();
+                }
+                transaction.setPrice(price);
+                MovieDBContext mdb = new MovieDBContext();
+                int movieId = transaction.getTickets().get(0).getMovie_id();
+                transaction.setMovie(mdb.getMovie(movieId));
+                String sql_performance = "SELECT [performance_number]\n"
+                        + "      ,[performance_from_time]\n"
+                        + "      ,[performance_to_time]\n"
+                        + "  FROM [Performance_Number]\n"
+                        + "  WHERE [performance_number] = ? ";
+                PreparedStatement stm_performance = connection.prepareStatement(sql_performance);
+                int performanceNumber = transaction.getTickets().get(0).getPerformance_number();
+                stm_performance.setInt(1, performanceNumber);
+                ResultSet rs_performance = stm_performance.executeQuery();
+                if (rs_performance.next()) {
+                    PerformanceNumber pn = new PerformanceNumber();
+                    pn.setNumber(performanceNumber);
+                    pn.setFromTime(rs_performance.getTime("performance_from_time"));
+                    pn.setToTime(rs_performance.getTime("performance_to_time"));
+                    transaction.setPerformanceNumber(pn);
+                }
+                CinemaDBContext cdb = new CinemaDBContext();
+                int cinemaId = transaction.getTickets().get(0).getCinema_id();
+                transaction.setCinema(cdb.getCinema(cinemaId));
+                transactions.add(transaction);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        account.setTransactions(transactions);
+        return account;
     }
 }

@@ -29,7 +29,7 @@ public abstract class BaseRequiredAuthController extends HomeController {
         if(account != null){
             String url = request.getServletPath();
             for (Feature f : account.getFeatures()){
-                if (f.getUrl().compareTo(url) == 0){
+                if (url.contains(f.getUrl())){
                     isAuthorized = true;
                     break;
                 }

@@ -41,10 +41,10 @@ $(document).ready(function () {
                     <div class="header-icon-container">
                         <i class="material-icons header-icon"></i>
                     </div>
-                </div><!--movie-header-->
+                </div>
                 <div class="movie-content">
                     <div class="movie-content-header">
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/movie/details?movieid=${movie.id}">
                             <h3 class="movie-title">${movie.name}</h3>
                         </a>
                     </div>
@@ -52,12 +52,17 @@ $(document).ready(function () {
                         <div class="info-section">
                             <label>Ngày khởi chiếu</label>
                             <span>${movie.runningTime}</span>
-                        </div><!--date,time-->
+                        </div>
                         <div class="info-section">
                             <label>Thể loại</label>
                             <span>${movie.rated}</span>
                         </div>
                     </div>
+                </div>
+                <div class="movie-footer">
+                    <div class="movie-btn"><a href="${pageContext.request.contextPath}/cinema/booking?movieid=${movie.id}">Đặt vé</a></div>
+                    <div class="movie-btn"></div>
+                    <div class="movie-btn"><a href="${pageContext.request.contextPath}/movie/details?movieid=${movie.id}">Chi tiết</a></div>
                 </div>
             </div>
             <div class="popup-container">

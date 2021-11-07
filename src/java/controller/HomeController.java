@@ -66,11 +66,11 @@ public class HomeController extends HttpServlet {
 //        request.setAttribute("dob", account.getDob().toString());
         String home_href = "/Assignment-PRJ301/home";
         String login_href = "/Assignment-PRJ301/account/login";
-        String login_href_value = "Login";
+        String login_href_value = "Đăng nhập";
         String register_href = "/Assignment-PRJ301/account/register";
-        String register_href_value = "Register";
+        String register_href_value = "Đăng ký";
         String logout_href = "/Assignment-PRJ301/account/logout";
-        String logout_href_value = "Log out";
+        String logout_href_value = "Đăng xuất";
         if (request.getSession().getAttribute("account") == null){
             logout_href = "";
             logout_href_value = "";
@@ -81,7 +81,7 @@ public class HomeController extends HttpServlet {
             register_href_value = "";
             Account account = (Account)request.getSession().getAttribute("account");
             login_href_value += account.getDisplayName();
-            login_href = "/Assignment-PRJ301/account/update";
+            login_href = "/Assignment-PRJ301/account/info";
         }
         request.setAttribute("home_href", home_href);
         request.setAttribute("login_href", login_href);

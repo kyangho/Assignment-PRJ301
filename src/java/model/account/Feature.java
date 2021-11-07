@@ -10,6 +10,7 @@ package model.account;
  * @author Ducky
  */
 public class Feature {
+    private int id;
     private String url;
 
     public Feature() {
@@ -19,6 +20,14 @@ public class Feature {
         this.url = url;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getUrl() {
         return url;
     }

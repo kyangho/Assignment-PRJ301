@@ -24,7 +24,6 @@ import model.movie.Movie;
  * @author Ducky
  */
 public class BookingController extends HomeController {
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -38,7 +37,6 @@ public class BookingController extends HomeController {
             throws ServletException, IOException {
 
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -89,7 +87,6 @@ public class BookingController extends HomeController {
         request.setAttribute("pageInclude", "/view/ticket/ticket.jsp");
         request.getRequestDispatcher("../../view/home.jsp").forward(request, response);
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -99,5 +96,4 @@ public class BookingController extends HomeController {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

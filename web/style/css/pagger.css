@@ -1,0 +1,31 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 22, 2021, 9:33:48 AM
+    Author     : dell
+*/
+
+.pagger a
+{
+    display: inline-block;
+    border-color: blue;
+    border-style: solid;
+    margin-left: 2px;
+    width: 33px;
+    padding: 2px;
+    height: 33px;
+    text-align: center;
+}
+.pagger span
+{
+    display: inline-block;
+    margin-left: 2px;
+    width: 33px;
+    padding: 2px;
+    height: 33px;
+    text-align: center;
+    font-weight: bold;
+}

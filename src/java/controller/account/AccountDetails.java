@@ -50,12 +50,17 @@ public class AccountDetails extends HomeController {
             request.setAttribute("displayname", account.getDisplayName());
             request.setAttribute("email", account.getEmail());
             request.setAttribute("phone", account.getPhone());
-            request.setAttribute("pageInclude", "/view/account/detail.jsp");
+            request.setAttribute("account", account);
+            loadHeaderFooter(request, response);
+            request.setAttribute("mainBody", "../account/detail.jsp");
+            request.setAttribute("mainTitle", "Thông tin tài khoản");
+            request.setAttribute("pageInclude", "../view/account/container.jsp");
+            request.getRequestDispatcher("../view/home.jsp").forward(request, response);
+            return;
         }else{
             response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
-        super.doGet(request, response);
     }
 
     /**
