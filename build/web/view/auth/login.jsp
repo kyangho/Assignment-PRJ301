@@ -23,16 +23,11 @@
                 </div>
                 <input type="password" name="password" class="form-control input-pass" value="" placeholder="Mật khẩu">
             </div>
-            <c:if test="${requestScope.isFailed != null}">
-                <c:if test="${requestScope.isFailed}">
-                    Đăng nhập thất bại
-                </c:if><br/>   
-            </c:if>
             <div class="d-flex justify-content-center ">
                 <button type="submit" name="button" class="btn login_btn">Đăng nhập</button>
             </div>
             <c:if test="${requestScope.isFailed != null}">
-                <div class="col-md-12 text-center text-success">${requestScope.isFailed ? "Tên đăng nhập hoặc mật khẩu không đúng" : ""}</div>
+                <div class="col-md-12 text-center text-danger">${requestScope.isFailed ? "Tên đăng nhập hoặc mật khẩu không đúng" : ""}</div>
             </c:if>
             <div class="mt-3">
                 <div class="d-flex justify-content-center">

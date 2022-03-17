@@ -240,13 +240,26 @@ public class MovieDBContext extends DBContext{
         
         return genres;
     }
-    public ArrayList<Movie> getMoviesByDate(int movieid, Date date){
+    public ArrayList<Movie> getMoviesByDateId(int movieid, Date date){
         MovieDBContext mdb = new MovieDBContext();
         ArrayList<Movie> movies = mdb.getMovies();
         ArrayList<Movie> rsMovies = new ArrayList<>();
         for (Movie m : movies){
             if (m.getMovieShowing().getFromShowing().compareTo(date) <= 0
                     && m.getMovieShowing().getToShowing().compareTo(date)  >= 0 && m.getId() == movieid){
+                rsMovies.add(m);
+            }else{
+            }
+        }
+        return rsMovies;
+    }
+    public ArrayList<Movie> getMoviesByDate(Date date){
+        MovieDBContext mdb = new MovieDBContext();
+        ArrayList<Movie> movies = mdb.getMovies();
+        ArrayList<Movie> rsMovies = new ArrayList<>();
+        for (Movie m : movies){
+            if (m.getMovieShowing().getFromShowing().compareTo(date) <= 0
+                    && m.getMovieShowing().getToShowing().compareTo(date)  >= 0){
                 rsMovies.add(m);
             }else{
             }

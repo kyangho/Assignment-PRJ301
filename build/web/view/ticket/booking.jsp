@@ -15,8 +15,11 @@
 
 </style>
 <div class="bottom-content">
-
-    <button class="btn-left"  title="Previous">Previous</button>
+    <form method="GET" action="${pageContext.request.contextPath}/cinema/booking" class="clearfix" style="display: inline-block; float: none; vertical-align: top;">
+        <input class="" type="text" value="${requestScope.movie.id}" name="movieid" hidden>
+        <input type="submit" class="btn-left box" value="Quay lại">
+    </form>
+    
 
     <div class="minicart-wrapper">
         <ul>

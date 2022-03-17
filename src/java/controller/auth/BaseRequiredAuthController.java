@@ -74,7 +74,7 @@ public abstract class BaseRequiredAuthController extends HomeController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (isAuthenticated(request)){
-            processGet(request, response);
+            processPost(request, response);
         }else{
             response.getWriter().print("access denied");
         }

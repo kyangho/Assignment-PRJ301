@@ -58,7 +58,6 @@
                 data: {movieid: movieid, day: day},
                 success: function (responseText) {
                     if (responseText != "") {
-                        
                         $('#isNullMovie').text(responseText);
                         $('.showTimes').prop("style", "display:none")
                     } else {

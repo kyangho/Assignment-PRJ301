@@ -8,7 +8,10 @@ package controller.movie;
 import dal.MovieDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +37,9 @@ public class MovieListsController extends HttpServlet {
             throws ServletException, IOException {
         MovieDBContext mdb = new MovieDBContext();
         ArrayList<Movie> movies = new ArrayList<>();
-        movies = mdb.getMovies();
+        java.util.Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        movies = mdb.getMoviesByDate(Date.valueOf(sdf.format(date)));
         request.setAttribute("movies", movies);
         request.getRequestDispatcher("../view/movie/list.jsp").forward(request, response);
     }

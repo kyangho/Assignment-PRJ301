@@ -34,10 +34,10 @@ public class LoginController extends HomeController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Boolean isFailed = null;
-        
-        try{
+
+        try {
             isFailed = Boolean.parseBoolean(request.getParameter("isFailed"));
-        }catch(Exception e){
+        } catch (Exception e) {
             request.setAttribute("isFailed", null);
         }
         request.setAttribute("pageInclude", "/view/auth/login.jsp");
@@ -58,18 +58,20 @@ public class LoginController extends HomeController {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         AccountDBContext adb = new AccountDBContext();
         Account account = adb.getAccount(username, password);
-        if (account != null){
+        if (account != null) {
             request.setAttribute("isFailed", false);
             request.getSession().setAttribute("account", account);
             request.getSession().setAttribute("account", account);
             response.sendRedirect(request.getContextPath() + "/home");
-        }else{
+        } else {
             request.setAttribute("isFailed", true);
             request.getSession().setAttribute("account", null);
-            response.sendRedirect(request.getContextPath() + "/account/login");
+            request.setAttribute("pageInclude", "/view/auth/login.jsp");
+            super.loadHeaderFooter(request, response);
+            request.getRequestDispatcher("../view/home.jsp").forward(request, response);
         }
     }
 
